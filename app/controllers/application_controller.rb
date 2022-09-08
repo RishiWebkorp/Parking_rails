@@ -29,6 +29,24 @@ class ApplicationController < ActionController::API
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up, keys:[ :email, :password, :name, :role ])
     end
+
+    def slot_payment(price)
+        require('stripe')
+    
+        Stripe.api_key = 'sk_test_51Lf7P6J41TtT139qX2GCGrEePT2hBwCgvZ2nKwfePTLusuwU2RfQH3OaQeOdda922TxhSRsVGUNXpWrYdpxMfUpo00oGyL8Tkj'
+    
+        price = Stripe::Price.create({
+                                       unit_amount: price * 100,
+                                       currency: 'inr',
+                                       product: 'prod_MNuQmjYtCQaZBa'
+                                     })
+    
+        order = Stripe::PaymentLink.create(
+          line_items: [{ price: price.id, quantity: 1 }],
+          after_completion: { type: 'redirect', redirect: { url: 'http://localhost:3000/thanks' } }
+        )
+        system('xdg-open', order.url)
+      end
     
 
     # def booked_status_check

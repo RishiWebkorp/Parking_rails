@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_02_180614) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_06_182204) do
   create_table "floors", charset: "utf8mb4", force: :cascade do |t|
     t.integer "floor"
     t.datetime "created_at", null: false
@@ -36,6 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_02_180614) do
     t.datetime "updated_at", null: false
     t.integer "floor_id"
     t.integer "user_id"
+    t.integer "floor"
   end
 
   create_table "users", charset: "utf8mb4", force: :cascade do |t|

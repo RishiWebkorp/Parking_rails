@@ -16,10 +16,12 @@ Rails.application.routes.draw do
   end
 
   namespace :floors do
-    resources :floors, path: '/'  
+    resources :floors, path: '/' do
+      get '/floors/:id', to: 'floors#show'
+    end
   end
 
-  resources :floors do
+  namespace :floors do
     resources :slots do
     end
 end

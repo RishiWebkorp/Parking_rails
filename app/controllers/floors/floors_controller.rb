@@ -1,5 +1,5 @@
 class Floors::FloorsController < ApplicationController
-    load_and_authorize_resource
+    load_and_authorize_resource except:[:show]
 
     before_action :floor_id, only:[:show, :update, :destroy]
 
@@ -9,16 +9,24 @@ class Floors::FloorsController < ApplicationController
     end
 
     def show
-        render json: @floor.slots.all
+        if @floor
+            unless @floor.slots.all.blank?
+                render json: @floor.slots.all
+            else
+                render json: {message: "no vehicle is parked here"}
+            end
+        else
+            render json:{message:"No slots are there currently "}
+        end
     end
 
     def create
         @floor = Floor.new(floor_params)
         if params[:floor][:floor].to_i <= 5
             if @floor.save
-                render json:{message:"Floor created successfully"}
+                render json:{message:"Floor created successfully and floor no is #{@floor.floor}"}
             else
-                render json:{message:"Floor creation failed"}
+                render json:{message:"Floor creation failed. #{@floor.errors.full_messages}"}
             end
         else
             render json:{message:"Floor limit exceeded can't create a new Floor"}
@@ -49,21 +57,25 @@ class Floors::FloorsController < ApplicationController
         end
     end
 
-    def floor_slots
 
-    end
+  
 
 
     private
 
     def floor_id
-        @floor = Floor.find(params[:id])
+        
+        @floor = Floor.find_by(floor: params[:id])
+       
     end
 
     def floor_params
         params.require(:floor).permit(:floor)
     end
 
+    def by_floor
+        @floor = Floor.find_by(params[:floor])
+    end
 
 
 
