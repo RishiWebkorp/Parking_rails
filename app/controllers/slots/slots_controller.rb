@@ -19,17 +19,7 @@ class Slots::SlotsController < ApplicationController
 
     def update
         if @slot.update(slot_params)
-
-            if @slot.outtime == nil
-                cal_outtime
-                @slot.update(slot_params)   
-                #UserMailer.with(outtime:@slot.outtime, status:@slot.status, Price:@slot.Price).outtime.deliver_later
-                # slot_payment(@slot.Price)
-                render json:{message: "Slots is unbooked and your Amount is #{@slot.Price} "}
-            else
-                render json:{message: "Slot already Updated"}
-                
-            end
+            update_details
         else
                 render json:{message: "Slots is not updated successfully. #{@slot.errors.full_messages}"}
         end
@@ -38,20 +28,7 @@ class Slots::SlotsController < ApplicationController
     def create
         @slot = Slot.new(slot_params)
         if params[:slot][:slot].to_i <= 5
-
-            if @slot.user_id == nil 
-                @slot.user_id = current_user.id
-                cal_intime
-                
-                if @slot.save
-                    #UserMailer.with(slot:@slot.slot, car_no:@slot.car_no, intime:@slot.intime, name:@slot.name, status:@slot.status).check.deliver_later
-                    render json:{message:"Slot is booked on slot number: #{@slot.slot} and car_no: #{@slot.car_no} and Intime is: #{@slot.intime}"}
-                else
-                    render json:{message:"Slot is not booked.#{@slot.errors.full_messages}" }
-                end
-            else
-                render json:{message:"Already booked with #{@slot.car_no}"}
-            end
+           check_details
         else
             render json:{message:"slot limit exceeded can't create a new slot"}
         end
@@ -78,7 +55,7 @@ class Slots::SlotsController < ApplicationController
 
     end
     
-  
+   
 
 
 
