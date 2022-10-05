@@ -56,12 +56,4 @@ class ApplicationController < ActionController::API
     #         render json: {'message' => " Slots are not available"}
     # end
 
-    # def total_slots_check
-    #     total_slots = 10
-    #     slots[total_slots]
-    #     if current_user.status == "unbooked"
-    #        slots[total_slots] = slots[total_slots - 1]
-    #     end
-    # end
-
 end

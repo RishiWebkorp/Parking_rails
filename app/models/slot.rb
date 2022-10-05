@@ -5,9 +5,10 @@ class Slot < ApplicationRecord
 
     #validations
     validates :slot, presence: true                
-    validates :car_no, presence: true
+    validates :car_no, presence: true #, uniqueness: true
     validates :name, presence: true
-    validates :status, presence: true
     validates :floor_id, presence: true
+
+    scope :search, lambda {|query|where(["car_no LIKE ?","%#{query}%"])}
 
 end 
