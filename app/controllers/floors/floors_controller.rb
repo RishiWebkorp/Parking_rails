@@ -1,6 +1,7 @@
 class Floors::FloorsController < ApplicationController
     load_and_authorize_resource except:[:show]
 
+    include Floors::FloorsModule
     before_action :floor_id, only:[:show, :update, :destroy]
 
     def index
@@ -9,44 +10,20 @@ class Floors::FloorsController < ApplicationController
     end
 
     def show
-        if @floor
-            unless @floor.slots.all.blank?
-                render json: @floor.slots.all
-            else
-                render json: {message: "no vehicle is parked here"}
-            end
-        else
-            render json:{message:"No slots are there currently "}
-        end
+       floor_show
     end
 
     def create
         @floor = Floor.new(floor_params)
-        if params[:floor][:floor].to_i <= 5
-            if @floor.save
-                render json:{message:"Floor created successfully and floor no is #{@floor.floor}"}
-            else
-                render json:{message:"Floor creation failed. #{@floor.errors.full_messages}"}
-            end
-        else
-            render json:{message:"Floor limit exceeded can't create a new Floor"}
-        end
+       floor_create
     end
 
     def update
-        if @floor.update(floor_params)
-            render json:{message:"Floor updated successfully"}
-        else
-            render json:{message:"Floor update failed"}
-        end
+        floor_update
     end
 
     def destroy
-        if @floor.destroy
-            render json:{message:"Floor destroyed successfully"}
-        else
-            render json:{message:"Floor destroy failed"}   
-        end
+       floor_destroy
     end
 
     def floor_status
@@ -56,10 +33,6 @@ class Floors::FloorsController < ApplicationController
             render json:{message:"Try Again"}
         end
     end
-
-
-  
-
 
     private
 

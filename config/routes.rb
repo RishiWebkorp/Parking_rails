@@ -21,9 +21,13 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :floors do
+  resources :floors do
     resources :slots do
     end
+
+    # namespace :floors do
+    #   resources :slots do
+    #   end
 end
 
 end

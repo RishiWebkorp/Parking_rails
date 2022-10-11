@@ -51,3 +51,8 @@ gem 'devise-jwt'
 gem 'rack-cors'
 gem 'cancancan'
 gem 'stripe'
+
+
+group :test do
+  gem 'rspec-rails'
+end
