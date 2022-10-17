@@ -13,7 +13,7 @@ class Ability
       
       if user.role == "user"
         can [:read], Floor
-        can %i[read create update], Slot 
+        can %i[read create update], Slot, user_id: user.id
         can %i[read update destroy], User, id: user.id
         
       end

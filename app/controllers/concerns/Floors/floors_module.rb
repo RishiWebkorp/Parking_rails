@@ -6,19 +6,18 @@ module Floors
     extend ActiveSupport::Concern
 
     # for floor creating
-    def floor_create
-      if params[:floor][:floor].to_i <= 5
-        if @floor.save
-          render json: { message: "Floor created successfully and floor no is #{@floor.floor}" }
-        else
-          render json: { message: "Floor creation failed. #{@floor.errors.full_messages}",
-                         status: :unprocessable_entity }
-
-        end
+  def floor_create
+    if params[:floor][:floor].to_i <= 6
+      if @floor.save
+        render json: { message: "Floor created successfully and floor no is #{@floor.floor}" }
       else
-        render json: { message: "Floor limit exceeded can't create a new Floor", status: :unprocessable_entity }
+        render json: { message: "Floor creation failed. #{@floor.errors.full_messages}",
+                       status: :unprocessable_entity }
       end
+    else
+      render json: { message: "Floor limit exceeded can't create a new Floor", status: :unprocessable_entity }
     end
+  end
 
     # for floor update
     def floor_update

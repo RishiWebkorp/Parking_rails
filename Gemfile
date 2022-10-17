@@ -53,6 +53,9 @@ gem 'cancancan'
 gem 'stripe'
 
 
-group :test do
+group :development, :test do
   gem 'rspec-rails'
 end
+gem 'factory_bot_rails'
+
+gem 'simplecov', require: false, group: :test

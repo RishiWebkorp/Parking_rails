@@ -23,7 +23,7 @@ module Slots
               cal_outtime
               @slot.update(slot_params)   
               #UserMailer.with(outtime:@slot.outtime, status:@slot.status, Price:@slot.Price).outtime.deliver_later
-              # slot_payment(@slot.Price)
+              #slot_payment(@slot.Price)
               render json:{message: "Slots is unbooked and your Amount is #{@slot.Price} "}
           else
               render json:{message: "Slot already Updated"}
@@ -47,30 +47,29 @@ module Slots
 
         #for data time calculation
         def total_time(slot_id)
-            check_date = outtime_days(slot_id)
-            #if data change so we calculate total hours and minutes
-            check_date > 0 ? total_hours = 24 + outtime_hours(slot_id) : total_hours = outtime_hours(slot_id)
-            total_hours > 0 ? total_min = 60 + outtime_minutes(slot_id) : total_min = outtime_minutes(slot_id)
+          check_date = slot_id.outtime.strftime('%d').to_i - slot_id.intime.strftime('%d').to_i
+
+          #if data change so we calculate total hours and minutes
+          if check_date > 0
+              total_hours = 24 + slot_id.outtime.strftime('%H').to_i - slot_id.intime.strftime('%H').to_i
+          else
+              total_hours = slot_id.outtime.strftime('%H').to_i - slot_id.intime.strftime('%H').to_i
+          end
+
+          if total_hours > 0
+              total_min = 60 + slot_id.outtime.strftime('%M').to_i - slot_id.intime.strftime('%M').to_i
+          else
+              total_min = slot_id.outtime.strftime('%M').to_i - slot_id.intime.strftime('%M').to_i
+          end
+
+          if check_date > 0
+            total_min > 0 ? total_hours = total_hours + 1 : total_hours
+          else
+             total_min > 0 ? total_hours = total_hours + 1 : total_hours
+          end
+        end
+
         
-            if check_date > 0
-                total_min > 0 ? total_hours = total_hours + 1 : total_hours
-            else
-                  total_min > 0 ? total_hours = total_hours + 1 : total_hours
-            end
-        end
-
-        def outtime_days(slot_id)
-          slot_id.outtime.strftime('%d').to_i - slot_id.intime.strftime('%d').to_i
-        end
-
-        def outtime_hours(slot_id)
-          24 + slot_id.outtime.strftime('%H').to_i - slot_id.intime.strftime('%H').to_i
-        end
-
-        def outtime_minutes(slot_id)
-          60 + slot_id.outtime.strftime('%M').to_i - slot_id.intime.strftime('%M').to_i
-        end
-
         def login_user
           @slot.user_id = current_user.id
         end

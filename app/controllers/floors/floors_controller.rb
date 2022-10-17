@@ -14,8 +14,8 @@ class Floors::FloorsController < ApplicationController
     end
 
     def create
-        @floor = Floor.new(floor_params)
-       floor_create
+      @floor = Floor.new(floor_params)
+      floor_create
     end
 
     def update
@@ -37,9 +37,7 @@ class Floors::FloorsController < ApplicationController
     private
 
     def floor_id
-        
         @floor = Floor.find_by(floor: params[:id])
-       
     end
 
     def floor_params
