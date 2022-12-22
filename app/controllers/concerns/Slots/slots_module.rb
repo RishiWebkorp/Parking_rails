@@ -1,6 +1,7 @@
 module Slots
     module  SlotsModule
         extend ActiveSupport::Concern
+
         #in_time calculation
         def cal_intime
             t=DateTime.now
@@ -8,6 +9,7 @@ module Slots
             in_time_hour = t.strftime('%H').to_i
             in_time_min = t.strftime('%M').to_i
         end
+        
         #outtime calculation
         def cal_outtime
             t = DateTime.now

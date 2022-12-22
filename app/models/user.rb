@@ -26,5 +26,4 @@ validates :name, presence: true
 
 validates :role, presence: true
 
-#validates :slot_id, presence: true
 end

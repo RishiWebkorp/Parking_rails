@@ -55,7 +55,7 @@ describe "PUT slots#update" do
     update_slot_params = {id: slot.id, slot: {slot:1, car_no:"mp09fg0000", car_color:"" ,outtime:"", name:"john", status:"unbooked",floor_id: slot.floor.id, user_id:"" } }
     patch :update, params:update_slot_params ,format: :json
     slot = JSON.parse(response.body)
-    expect(slot.dig("message")).to eq "Slots is unbooked and your Amount is 700 "
+    expect(slot.dig("message")).to eq "Slots is unbooked and your Amount is 600 "
   end
 
 end

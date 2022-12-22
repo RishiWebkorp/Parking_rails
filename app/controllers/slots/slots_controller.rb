@@ -8,7 +8,6 @@ class Slots::SlotsController < ApplicationController
     def index
         @slots = Slot.all
         render json: @slots
-        
     end
 
     def show
@@ -37,11 +36,12 @@ class Slots::SlotsController < ApplicationController
       end
     end
 
-
     def slot_id
         @slot = Slot.find(params[:id])
     end
+
     private
+
     def slot_params
         params.require(:slot).permit(:slot, :car_no, :car_color, :intime, :outtime, :Price, :name,:status, :floor_id, :user_id)
     end
